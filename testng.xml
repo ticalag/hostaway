@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="HostawayTestSuite">
+
+    <test name="Filters and Listings Tests">
+        <classes>
+            <class name="com.hostaway.tests.FiltersFormTest"/>
+            <class name="com.hostaway.tests.ListingsTest"/>
+        </classes>
+    </test>
+
+</suite>
