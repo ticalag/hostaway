@@ -13,15 +13,17 @@ Please provide automation tests forhttps://kamil-demo.alpinizm.uz/ using Selenid
    Please don't hesitate to contact me if you have any questions or concerns.
 
 
-####Tech stack: java, selenium, testNG, Allure reporting
 
 
-###To run the tests run: 
+#### Tech stack: java, selenium, testNG, Allure reporting
+
+
+### To run the tests run: 
 
 **mvn clean test**
 
 
 
-###To generate allure report run:  
+### To generate allure report run:  
 
 **allure serve target/allure-results**
