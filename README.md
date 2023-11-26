@@ -2,7 +2,7 @@
 # Automation framework created for Hostaway Technical Task 
 
 Requirements:
-Please provide automation tests forhttps://kamil-demo.alpinizm.uz/ using Selenide (or Selenium), Allure, Java 11, JUnit or TestNG (without Cucumber) which will do the following:
+Please provide automation tests for https://kamil-demo.alpinizm.uz/ using Selenide (or Selenium), Allure, Java 11, JUnit or TestNG (without Cucumber) which will do the following:
 1. Check Filters form: entry fields, checkboxes, minimum and maximum values, Amenities checkboxes, “Clear all” is functional, check buttons without clicking "Apply".
    To reach the Filters form on https://kamil-demo.alpinizm.uz/ press the Search button, press the Filter button.
 2. Check that the 'All listings' page (https://kamil-demo.alpinizm.uz/all-listings) has the same amount of listings as the 'All' label.
