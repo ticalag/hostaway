@@ -1,5 +1,5 @@
 
-Automation framework create for Hostaway Technical Task 
+# Automation framework created for Hostaway Technical Task 
 
 Requirements:
 Please provide automation tests forhttps://kamil-demo.alpinizm.uz/ using Selenide (or Selenium), Allure, Java 11, JUnit or TestNG (without Cucumber) which will do the following:
@@ -13,7 +13,15 @@ Please provide automation tests forhttps://kamil-demo.alpinizm.uz/ using Selenid
    Please don't hesitate to contact me if you have any questions or concerns.
 
 
-Tech stack: java, selenium, testNG, Allure reporting
+####Tech stack: java, selenium, testNG, Allure reporting
 
-to run the tests run: mvn clean test 
-to generate allure report run:  allure serve target/allure-results
+
+###To run the tests run: 
+
+**mvn clean test**
+
+
+
+###To generate allure report run:  
+
+**allure serve target/allure-results**

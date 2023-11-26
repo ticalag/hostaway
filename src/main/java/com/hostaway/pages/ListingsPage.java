@@ -1,5 +1,6 @@
 package com.hostaway.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -11,20 +12,20 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
-public class ListingsPage {
+public class ListingsPage extends BasePage {
 
-    private WebDriver driver;
     private WebDriverWait wait;
 
     public ListingsPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
-
 
     private By allListingsLabel = By.cssSelector(".hYJCa");
     private By listingsTitle = By.cssSelector(".bAGyCr > h3");
     private By listingsLoader = By.cssSelector(".jmOaEN .jFodJP");
+    private By listingsTab = By.cssSelector(".jfhxYY li:nth-child(2) > a");
 
+    @Step("Scroll to the the end of the listings")
     public void scrollToLoadAllListings() {
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
@@ -50,13 +51,19 @@ public class ListingsPage {
         }
     }
 
+    @Step("Navigate to all listings")
+    public void navigateToAllListings() {
+        click(listingsTab);
+    }
 
+    @Step("Wait for the loader to finish")
     public void waitForLoaderToFinish() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfElementLocated(listingsLoader));
         wait.until(ExpectedConditions.invisibilityOfElementLocated(listingsLoader));
     }
 
+    @Step("Read the total listings from the All label")
     public int getTotalListingsFromLabel() {
         WebElement allLabel = driver.findElement(allListingsLabel);
         String allLabelText = allLabel.getText();
@@ -70,17 +77,13 @@ public class ListingsPage {
     }
 
     public int getTotalListingsFromAllButton() {
-        // Wait for the "All" button to be visible
-        wait.until(ExpectedConditions.visibilityOfElementLocated(allListingsLabel));
+        waitUntilElementVisible(allListingsLabel, 10);
 
         // Wait for the "All" button text to contain digits
         wait.until((ExpectedCondition<Boolean>) wd ->
                 driver.findElement(allListingsLabel).getText().matches(".*\\d.*"));
 
-        // Once the text contains digits, retrieve and parse the total number of listings
         String allButtonText = driver.findElement(allListingsLabel).getText();
-        // Extract the digits and parse them to an integer
-
         return Integer.parseInt(allButtonText.replaceAll("\\D+", ""));
     }
 }

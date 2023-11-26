@@ -1,51 +1,81 @@
 package com.hostaway.tests;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import jdk.jfr.Description;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 import com.hostaway.pages.FilterPage;
 
-import java.time.Duration;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
-public class FiltersFormTest {
-    private WebDriver driver;
+public class FiltersFormTest extends BaseTest {
     private FilterPage filterPage;
 
     @BeforeMethod
     public void setup() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(20));
+        super.setup();
         filterPage = new FilterPage(driver);
-
     }
 
-    @Test(description="Validate filters work correctly and are cleared")
-    @Description("Test Description: Login test with wrong username and wrong password.")
-    public void testFiltersForm() {
-
-        driver.get("https://kamil-demo.alpinizm.uz/");
+    @Test(description = "Validate filters work correctly and are cleared")
+    public void validateFilterFunctionality() {
+//TODO this test can be broken into smaller pieces of validation, smaller tests, but upon breaking it into pieces, the run time tripled and the failures as well.
 
         filterPage.waitForSearchButton();
-
         filterPage.clickOnSearchButton();
-
         filterPage.selectCheckInAndCheckOutDates();
         filterPage.clickOnFilterButton();
 
-        //validate checkbox functionality
+        validateCheckBoxFunctionality();
+        validateRoomsAndBedsFunctionality();
+        validatePriceInputFieldFunctionality();
+        validateClearAllFunctionality();
+
+
+    }
+
+    private void validateClearAllFunctionality() {
+        filterPage.incrementBeds();
+        filterPage.incrementBedrooms();
+        filterPage.incrementBathrooms();
+
+        filterPage.clickClearAllButton();
+
+        //beds validation
+        Assert.assertTrue(filterPage.isDecrementBedDisabled(), "Decrement button should be disabled.");
+        //bathroom validation
+        Assert.assertTrue(filterPage.isDecrementBathroomsDisabled(), "Decrement button should be disabled.");
+        //bedroom validation
+        Assert.assertTrue(filterPage.isDecrementBedroomsDisabled(), "Decrement button should be disabled.");
+
+        Assert.assertEquals(filterPage.getBedsCount(), 0);
+        Assert.assertEquals(filterPage.getBedroomsCount(), 0);
+        Assert.assertEquals(filterPage.getBathroomsCount(), 0);
+
+        Assert.assertTrue(filterPage.areAllCheckboxesSelected(false), "All checkboxes should be deselected.");
+
+        Assert.assertTrue(filterPage.isToInputEmpty(), "'To' input field should be empty");
+        Assert.assertTrue(filterPage.isFromInputEmpty(), "'From' input field should be empty");
+    }
+
+    private void validatePriceInputFieldFunctionality() {
+        filterPage.setFromPrice("500");
+        filterPage.setToPrice("550");
+        filterPage.setFromPrice("600");
+        Assert.assertEquals(filterPage.getToPrice(), 605, "'To' price did not adjust correctly.");
+
+        filterPage.setToPrice("500");
+        Assert.assertEquals(filterPage.getFromPrice(), 495, "'From' price did not adjust correctly.");
+    }
+
+    private void validateCheckBoxFunctionality() {
         Assert.assertTrue(filterPage.areAllCheckboxesSelected(false), "Checkboxes should not be selected by default.");
         filterPage.selectAllCheckboxes();
         Assert.assertTrue(filterPage.areAllCheckboxesSelected(true), "All checkboxes should be selected.");
         filterPage.deselectAllCheckboxes();
         Assert.assertTrue(filterPage.areAllCheckboxesSelected(false), "All checkboxes should be deselected.");
         filterPage.selectAllCheckboxes();
+    }
 
+    private void validateRoomsAndBedsFunctionality() {
         //beds validation
         Assert.assertTrue(filterPage.isDecrementBedDisabled(), "Decrement button should be disabled.");
 
@@ -131,45 +161,5 @@ public class FiltersFormTest {
                 Assert.assertFalse(filterPage.isIncrementBathroomsDisabled(), "Increment button should be disabled.");
             }
         }
-
-
-        filterPage.setFromPrice("500");
-        filterPage.setToPrice("550");
-        filterPage.setFromPrice("600");
-        Assert.assertEquals(filterPage.getToPrice(), 605, "'To' price did not adjust correctly.");
-
-        filterPage.setToPrice("500");
-        Assert.assertEquals(filterPage.getFromPrice(), 495, "'From' price did not adjust correctly.");
-
-
-        filterPage.incrementBeds();
-        filterPage.incrementBedrooms();
-        filterPage.incrementBathrooms();
-
-        filterPage.clickClearAll();
-
-        //beds validation
-        Assert.assertTrue(filterPage.isDecrementBedDisabled(), "Decrement button should be disabled.");
-        //bathroom validation
-        Assert.assertTrue(filterPage.isDecrementBathroomsDisabled(), "Decrement button should be disabled.");
-        //bedroom validation
-        Assert.assertTrue(filterPage.isDecrementBedroomsDisabled(), "Decrement button should be disabled.");
-
-        Assert.assertEquals(filterPage.getBedsCount(), 0);
-        Assert.assertEquals(filterPage.getBedroomsCount(), 0);
-        Assert.assertEquals(filterPage.getBathroomsCount(), 0);
-
-        Assert.assertTrue(filterPage.areAllCheckboxesSelected(false), "All checkboxes should be deselected.");
-
-        Assert.assertTrue(filterPage.isToInputEmpty(), "'To' input field should be empty");
-        Assert.assertTrue(filterPage.isFromInputEmpty(), "'From' input field should be empty");
-
-
-    }
-
-
-    @AfterMethod
-    public void teardown() {
-        driver.quit();
     }
 }

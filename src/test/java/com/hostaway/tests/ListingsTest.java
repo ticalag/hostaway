@@ -1,32 +1,23 @@
 package com.hostaway.tests;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import com.hostaway.pages.ListingsPage;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import com.hostaway.pages.ListingsPage;
 
-import java.time.Duration;
-
-public class ListingsTest {
-    private WebDriver driver;
+public class ListingsTest extends BaseTest {
     private ListingsPage listingsPage;
 
     @BeforeMethod
     public void setup() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(20));
+        super.setup();
         listingsPage = new ListingsPage(driver);
     }
 
-    @Test (description="Validate the number of listings is correct")
+    @Test(description = "Validate the number of listings is correct")
     public void testListings() {
-        driver.get("https://kamil-demo.alpinizm.uz/all-listings");
 
+        listingsPage.navigateToAllListings();
         listingsPage.waitForLoaderToFinish();
         listingsPage.scrollToLoadAllListings();
 
@@ -37,8 +28,4 @@ public class ListingsTest {
 
     }
 
-    @AfterMethod
-    public void teardown() {
-        driver.quit();
-    }
 }
