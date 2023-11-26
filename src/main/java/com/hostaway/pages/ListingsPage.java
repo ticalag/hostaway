@@ -1,5 +1,6 @@
 package com.hostaway.pages;
 
+import com.hostaway.utils.TestConstants;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -20,15 +21,15 @@ public class ListingsPage extends BasePage {
         super(driver);
     }
 
-    private By allListingsLabel = By.cssSelector(".hYJCa");
-    private By listingsTitle = By.cssSelector(".bAGyCr > h3");
-    private By listingsLoader = By.cssSelector(".jmOaEN .jFodJP");
-    private By listingsTab = By.cssSelector(".jfhxYY li:nth-child(2) > a");
+    private final By allListingsLabel = By.cssSelector(".hYJCa");
+    private final By listingsTitle = By.cssSelector(".bAGyCr > h3");
+    private final By listingsLoader = By.cssSelector(".jmOaEN .jFodJP");
+    private final By listingsTab = By.cssSelector(".jfhxYY li:nth-child(2) > a");
 
     @Step("Scroll to the the end of the listings")
     public void scrollToLoadAllListings() {
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(TestConstants.FIFTEEN_SECONDS));
 
         int totalNumberOfListings = getTotalListingsFromAllButton();
         int currentNumberOfListings = 0;
@@ -58,7 +59,7 @@ public class ListingsPage extends BasePage {
 
     @Step("Wait for the loader to finish")
     public void waitForLoaderToFinish() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TestConstants.TEN_SECONDS));
         wait.until(ExpectedConditions.visibilityOfElementLocated(listingsLoader));
         wait.until(ExpectedConditions.invisibilityOfElementLocated(listingsLoader));
     }
@@ -77,7 +78,7 @@ public class ListingsPage extends BasePage {
     }
 
     public int getTotalListingsFromAllButton() {
-        waitUntilElementVisible(allListingsLabel, 10);
+        waitUntilElementVisible(allListingsLabel, TestConstants.TEN_SECONDS);
 
         // Wait for the "All" button text to contain digits
         wait.until((ExpectedCondition<Boolean>) wd ->

@@ -1,10 +1,12 @@
 package com.hostaway.tests;
 
 import com.hostaway.pages.ListingsPage;
+import io.qameta.allure.Feature;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Feature("Listings")
 public class ListingsTest extends BaseTest {
     private ListingsPage listingsPage;
 

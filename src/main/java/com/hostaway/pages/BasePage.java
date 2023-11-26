@@ -1,5 +1,6 @@
 package com.hostaway.pages;
 
+import com.hostaway.utils.TestConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,8 +23,20 @@ public class BasePage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
+
+    public WebElement waitUntilElementVisible(By by) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TestConstants.ONE_SECOND));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+        return driver.findElement(by);
+    }
+
+    public void waitUntilNumberOfElementsToBe(By by, Integer seconds, Integer numberOfElement) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+        wait.until(ExpectedConditions.numberOfElementsToBe(by, numberOfElement));
+    }
+
     public void waitUntilElementClickable(By by) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TestConstants.ONE_SECOND));
         wait.until(ExpectedConditions.elementToBeClickable(by));
     }
 
